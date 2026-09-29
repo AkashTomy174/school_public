@@ -1,96 +1,96 @@
 import React from 'react';
-import { X, FileText, Download, ShieldCheck } from 'lucide-react';
 import { CBSE_DISCLOSURE_DOCS, SCHOOL_INFO } from '../data/schoolData';
+import { Modal, ModalHeader } from './ui/primitives';
+import { Download, FileText, ShieldCheck } from 'lucide-react';
 
 interface DisclosureModalProps {
   onClose: () => void;
 }
 
 export const DisclosureModal: React.FC<DisclosureModalProps> = ({ onClose }) => {
+  /**
+   * Statutory documents are hosted on the school's compliance repository; the
+   * public bundle only carries the manifest, so the download is acknowledged
+   * rather than served from here.
+   */
   const handleDownload = (title: string) => {
-    alert(`Downloading verified copy of "${title}" (Peevees Public School CBSE Compliance Repository).`);
+    window.alert(
+      `Downloading verified copy of "${title}" (Peevees Public School CBSE Compliance Repository).`,
+    );
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-[#faf9f5] max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden border border-[#e8e5dd] flex flex-col max-h-[85vh]">
-        {/* Header */}
-        <div className="bg-[#00162d] text-white p-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#aef2c2] text-[#00210f] flex items-center justify-center">
+    <Modal
+      onClose={onClose}
+      label="Mandatory CBSE public disclosure"
+      sizeClass="max-w-2xl"
+      header={
+        <ModalHeader
+          title="Mandatory CBSE Public Disclosure"
+          subtitle={`Affiliation #${SCHOOL_INFO.affiliationNo} • Circular Compliance Appendix IX`}
+          onClose={onClose}
+          icon={
+            <div className="w-8 h-8 rounded-full bg-forest-tint text-[#00210f] flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <div>
-              <h3 className="font-display text-lg sm:text-xl font-bold">
-                Mandatory CBSE Public Disclosure
-              </h3>
-              <p className="text-xs text-[#d2e4ff]">
-                Affiliation #{SCHOOL_INFO.affiliationNo} • Circular Compliance Appendix IX
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-lg bg-white/10 text-white/70 hover:text-white cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Content List */}
-        <div className="p-6 overflow-y-auto space-y-3">
-          <p className="text-xs text-[#43474d] leading-relaxed">
-            In compliance with the directives of the Central Board of Secondary Education (CBSE), New
-            Delhi, the verified official documents and statutory compliance reports are made available
-            here for public scrutiny.
-          </p>
-
-          <div className="divide-y divide-[#efeeea] border border-[#e8e5dd] rounded-xl bg-white overflow-hidden">
-            {CBSE_DISCLOSURE_DOCS.map((doc, idx) => (
-              <div
-                key={idx}
-                className="p-3.5 flex items-center justify-between gap-3 hover:bg-[#faf9f5] transition-colors"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded bg-[#efeeea] flex items-center justify-center text-[#7c5800] shrink-0 mt-0.5">
-                    <FileText className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-xs sm:text-sm text-[#00162d] leading-tight">
-                      {doc.title}
-                    </h5>
-                    <div className="flex items-center gap-2 mt-1 text-[11px] text-[#43474d]">
-                      <span className="font-mono">{doc.code}</span>
-                      <span>•</span>
-                      <span>Validity: {doc.validUntil}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleDownload(doc.title)}
-                  className="p-2 rounded-lg bg-[#faf9f5] hover:bg-[#00162d] hover:text-white text-[#00162d] border border-[#e8e5dd] transition-colors flex items-center gap-1.5 text-xs font-semibold shrink-0 cursor-pointer"
-                  title="Download verified PDF"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">PDF</span>
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="p-4 bg-[#efeeea] border-t border-[#e8e5dd] flex items-center justify-between text-xs text-[#43474d]">
+          }
+        />
+      }
+      footer={
+        <div className="shrink-0 p-4 bg-surface-container border-t border-hairline flex flex-wrap items-center justify-between gap-3 text-xs text-on-surface-variant">
           <span>Verified by CBSE Regional Office, Trivandrum</span>
           <button
+            type="button"
             onClick={onClose}
-            className="px-4 py-1.5 bg-[#00162d] text-white rounded-lg font-bold hover:bg-[#0f2b48]"
+            className="px-4 py-1.5 bg-primary text-white rounded-lg font-bold hover:bg-primary-container transition-colors cursor-pointer"
           >
             Close
           </button>
         </div>
+      }
+    >
+      <div className="p-6 space-y-3">
+        <p className="text-xs text-on-surface-variant leading-relaxed">
+          In compliance with the directives of the Central Board of Secondary Education (CBSE), New
+          Delhi, the verified official documents and statutory compliance reports are made available
+          here for public scrutiny.
+        </p>
+
+        <ul className="divide-y divide-surface-container border border-hairline rounded-xl bg-white overflow-hidden">
+          {CBSE_DISCLOSURE_DOCS.map((doc) => (
+            <li
+              key={doc.code}
+              className="p-3.5 flex items-center justify-between gap-3 hover:bg-surface transition-colors"
+            >
+              <div className="flex items-start gap-3 min-w-0">
+                <span className="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-secondary shrink-0 mt-0.5">
+                  <FileText className="w-4 h-4" />
+                </span>
+                <div className="min-w-0">
+                  <h4 className="font-bold text-xs sm:text-sm text-primary leading-tight">
+                    {doc.title}
+                  </h4>
+                  <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-on-surface-variant">
+                    <span className="font-mono">{doc.code}</span>
+                    <span aria-hidden="true">•</span>
+                    <span>Validity: {doc.validity}</span>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleDownload(doc.title)}
+                title={`Download ${doc.title} (PDF)`}
+                className="p-2 rounded-lg bg-surface hover:bg-primary hover:text-white text-primary border border-hairline transition-colors flex items-center gap-1.5 text-xs font-semibold shrink-0 cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">PDF</span>
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </Modal>
   );
 };

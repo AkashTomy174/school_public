@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                      */
+/* ------------------------------------------------------------------ */
+
 @theme {
   --font-display: "Playfair Display", Georgia, serif;
   --font-headline: "Playfair Display", Georgia, serif;
@@ -13,7 +17,7 @@
   --color-on-primary: #ffffff;
   --color-primary-fixed: #d2e4ff;
   --color-primary-fixed-dim: #afc8ed;
-  
+
   --color-secondary: #7c5800;
   --color-secondary-container: #ffc656;
   --color-secondary-fixed: #ffdea7;
@@ -38,6 +42,10 @@
   --color-outline: #74777e;
   --color-outline-variant: #c4c6ce;
 
+  /* Supporting accents referenced across sections. */
+  --color-hairline: #e8e5dd;
+  --color-forest-tint: #aef2c2;
+
   --spacing-space-xs: 0.25rem;
   --spacing-space-sm: 0.5rem;
   --spacing-space-md: 1rem;
@@ -46,98 +54,129 @@
   --spacing-space-2xl: 4rem;
 }
 
+/* ------------------------------------------------------------------ */
+/* Base                                                               */
+/* ------------------------------------------------------------------ */
+
 @layer base {
   html {
     scroll-behavior: smooth;
     font-family: var(--font-body);
+    /* Offset in-page anchors for the fixed masthead. */
+    scroll-padding-top: 6.5rem;
   }
 
   body {
-    background-color: #faf9f5;
-    color: #1b1c1a;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Visible focus ring that matches the institutional palette. */
+  :focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+  }
 }
 
-/* Custom Typography Helpers */
-.font-display {
-  font-family: "Playfair Display", Georgia, serif;
-}
+/* ------------------------------------------------------------------ */
+/* Typography helpers                                                 */
+/* ------------------------------------------------------------------ */
 
-.font-stat-display {
-  font-family: "Playfair Display", Georgia, serif;
-  font-variant-numeric: tabular-nums;
-}
-
-.font-headline-lg {
-  font-family: "Playfair Display", Georgia, serif;
+/* Display serif — used for page titles and dense numeric displays. */
+.font-display,
+.font-headline-lg,
+.font-headline-md,
+.font-headline-sm {
+  font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.2;
 }
 
-.font-headline-md {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 600;
+.font-stat-display {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1.05;
 }
 
-.font-headline-sm {
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 600;
-}
-
-.font-title-lg {
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-weight: 600;
-}
-
+/* Titling sans — headings inside cards and panels. */
+.font-title-lg,
 .font-title-md {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-title);
   font-weight: 600;
 }
 
+/* Body sans. */
 .font-body-lg {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-body);
   line-height: 1.68;
 }
 
 .font-body-md {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-body);
   line-height: 1.62;
 }
 
 .font-body-sm {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
 }
 
-.font-label-lg {
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-weight: 600;
-}
-
+/* Label sans — eyebrow text, chips and stat captions. */
+.font-label-lg,
 .font-label-md {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-label);
   font-weight: 600;
 }
 
 .font-label-sm {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-label);
   font-weight: 700;
 }
 
-/* Smooth custom scrollbars */
+/* ------------------------------------------------------------------ */
+/* Utilities                                                          */
+/* ------------------------------------------------------------------ */
+
+/* Horizontal scroll rails that should not show a scrollbar. */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Slow compass rotation used in the virtual-tour header. */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Slim branded scrollbars. */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #f4f4f0;
+  background: var(--color-surface-container-low);
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #c4c6ce;
+  background: var(--color-outline-variant);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #74777e;
+  background: var(--color-outline);
 }
+
